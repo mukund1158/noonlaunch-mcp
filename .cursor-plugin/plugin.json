@@ -1,0 +1,14 @@
+{
+  "name": "noonlaunch",
+  "version": "2.0.0",
+  "description": "Launch your product on Noonlaunch from Cursor, search the directory and weekly winners, and find 333 startup launch directories.",
+  "author": {
+    "name": "Noonlaunch",
+    "email": "support@noonlaunch.com"
+  },
+  "homepage": "https://noonlaunch.com/launch-with-ai",
+  "repository": "https://github.com/mukund1158/noonlaunch-mcp",
+  "license": "MIT",
+  "keywords": ["product-launch", "startup", "launch-directory", "marketing", "seo"],
+  "logo": "logo.png"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "noonlaunch",
+  "version": "2.0.0",
+  "description": "Launch your product on Noonlaunch, search its directory and weekly winners, and find 333 startup launch directories.",
+  "mcpServers": {
+    "noonlaunch": {
+      "httpUrl": "https://noonlaunch.com/mcp"
+    }
+  }
+}
