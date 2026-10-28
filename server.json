@@ -1,0 +1,25 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "com.noonlaunch/mcp",
+  "title": "Noonlaunch",
+  "description": "Launch a product on Noonlaunch, search its directory and weekly winners, and find 333 launch sites.",
+  "version": "2.0.0",
+  "websiteUrl": "https://noonlaunch.com/launch-with-ai",
+  "repository": {
+    "url": "https://github.com/mukund1158/noonlaunch-mcp",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://noonlaunch.com/images/brand/noonlaunch-favicon.png",
+      "mimeType": "image/png",
+      "sizes": ["446x446"]
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://noonlaunch.com/mcp"
+    }
+  ]
+}
