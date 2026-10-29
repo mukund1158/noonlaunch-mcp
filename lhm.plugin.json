@@ -1,0 +1,266 @@
+{
+  "identifier": "noonlaunch",
+  "name": "Noonlaunch",
+  "version": "2.0.0",
+  "description": "Launch a product on Noonlaunch from your agent, search its product directory and weekly winners, and browse 333 curated startup launch directories. Remote server, no API key.",
+  "author": "Noonlaunch",
+  "authorUrl": "https://github.com/mukund1158",
+  "homepage": "https://noonlaunch.com/launch-with-ai",
+  "cloudEndpoint": "https://noonlaunch.com/mcp",
+  "icon": "https://raw.githubusercontent.com/mukund1158/noonlaunch-mcp/main/logo.png",
+  "category": "productivity",
+  "tags": [
+    "product-launch",
+    "startup",
+    "marketing",
+    "launch-directory",
+    "seo"
+  ],
+  "tools": [
+    {
+      "name": "search-directory",
+      "title": "Search Directory",
+      "description": "Search the Noonlaunch product directory. Returns approved products matching the query, ordered by community votes, with links to their Noonlaunch product pages.",
+      "inputSchema": {
+        "properties": {
+          "query": {
+            "description": "Search term matched against product names, taglines and descriptions.",
+            "type": "string"
+          },
+          "category": {
+            "description": "Optional category slug or name to narrow results.",
+            "type": "string"
+          },
+          "limit": {
+            "description": "Max results to return (1-25, default 10).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Search Directory",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get-product",
+      "title": "Get Product",
+      "description": "Get full public details of one Noonlaunch product by its slug (the last part of its noonlaunch.com/product/... URL).",
+      "inputSchema": {
+        "properties": {
+          "slug": {
+            "description": "The product slug, e.g. \"my-product\" for noonlaunch.com/product/my-product.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Get Product",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get-weekly-winners",
+      "title": "Get Weekly Winners",
+      "description": "Get the Noonlaunch launch board for a week: the top-voted free launches, with the top 3 marked as winners. weeks_ago 0 is the current (still running) week, 1 is the last completed week.",
+      "inputSchema": {
+        "properties": {
+          "weeks_ago": {
+            "description": "How many weeks back (0 = current running week, 1 = last completed week, default 1, max 52).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Get Weekly Winners",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list-launch-directories",
+      "title": "List Launch Directories",
+      "description": "Browse Noonlaunch's curated list of 333 startup launch directories and communities where founders can submit a product. Filterable by category, cost and minimum domain authority.",
+      "inputSchema": {
+        "properties": {
+          "category": {
+            "description": "Filter by directory category, e.g. \"AI\", \"SaaS\", \"General\".",
+            "type": "string"
+          },
+          "free_only": {
+            "description": "Only directories that are free to submit to.",
+            "type": "boolean"
+          },
+          "min_da": {
+            "description": "Minimum domain authority (0-100).",
+            "type": "integer"
+          },
+          "limit": {
+            "description": "Max results (1-100, default 50).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "List Launch Directories",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get-plans",
+      "title": "Get Plans",
+      "description": "What it costs to launch on Noonlaunch, and what each plan includes. Use this to answer a pricing question on its own. To actually submit a product, call check_product instead: which plans apply depends on the site, because relaunching one that is already listed needs a paid plan.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "annotations": {
+        "title": "Get Plans",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "check-product",
+      "title": "Check Product",
+      "description": "Check whether a product can be submitted to Noonlaunch, and get the plans, categories and launch weeks available for it. Always call this first, and always ask the person for their live public website URL rather than guessing it from their code.",
+      "inputSchema": {
+        "properties": {
+          "website_url": {
+            "description": "The live public URL of the product, as given by the person. Never a localhost or development address.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Check Product",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "submit-product",
+      "title": "Submit Product",
+      "description": "Submit a product to Noonlaunch. Nothing is published by this call. It returns a claim link to give the person straight away, and for free launches the badge snippet to install. Call check_product first.",
+      "inputSchema": {
+        "properties": {
+          "website_url": {
+            "description": "The live public URL the person confirmed. Never guess this from the codebase.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Product name, 2-100 characters.",
+            "type": "string"
+          },
+          "tagline": {
+            "description": "One line shown on the board, 10-70 characters.",
+            "type": "string"
+          },
+          "description": {
+            "description": "What the product does, 30-600 characters. Longer text is rejected, not trimmed.",
+            "type": "string"
+          },
+          "category": {
+            "description": "Category id or slug from check_product.",
+            "type": "string"
+          },
+          "plan": {
+            "description": "One of: free, bundle_featured, bundle_spotlight. Ask the person which they want.",
+            "type": "string"
+          },
+          "launch_week": {
+            "description": "Optional launch week as a Monday date (YYYY-MM-DD) from check_product. Defaults to the next open week.",
+            "type": "string"
+          },
+          "logo_url": {
+            "description": "Optional public URL of the product logo image, which we download.",
+            "type": "string"
+          },
+          "twitter_handle": {
+            "description": "Optional X handle, with or without the @.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Submit Product",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "verify-badge",
+      "title": "Verify Badge",
+      "description": "Check that the Noonlaunch badge is installed on the product site and publish the listing if it is. Only for free launches, and only after the person has deployed the change. Paid listings are published by payment instead, so use check_status for those.",
+      "inputSchema": {
+        "properties": {
+          "submission_token": {
+            "description": "The submission_token returned by submit_product.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Verify Badge",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true
+      }
+    },
+    {
+      "name": "check-status",
+      "title": "Check Status",
+      "description": "Where a submission stands: whether it has been claimed, paid for, verified and published. This is the only way to find out whether a payment has landed. Poll it rather than assuming.",
+      "inputSchema": {
+        "properties": {
+          "submission_token": {
+            "description": "The submission_token returned by submit_product.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Check Status",
+        "readOnlyHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "report-badge-problem",
+      "title": "Report Badge Problem",
+      "description": "Report that the badge check is wrong: the badge is installed and visible but we cannot find it. Only use this after verify_badge has failed twice and you have confirmed the badge really is live on the page. A person reviews it within 24 hours.",
+      "inputSchema": {
+        "properties": {
+          "submission_token": {
+            "description": "The submission_token returned by submit_product.",
+            "type": "string"
+          },
+          "message": {
+            "description": "Where the badge is on the page and what you have already checked, so a human can resolve it without asking. 20-1500 characters.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Report Badge Problem",
+        "readOnlyHint": false,
+        "destructiveHint": false,
+        "openWorldHint": false
+      }
+    }
+  ]
+}
